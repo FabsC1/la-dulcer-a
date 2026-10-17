@@ -4,9 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#100e14">
-  <meta name="description" content="La Dulcería: hamburguesas, panes con pollo y pócimas dulces con un toque misterioso.">
-  <title>La Dulcería — Antojos de otra dimensión</title>
+  <meta name="description" content="Chocolates, gomitas, caramelos y cajas de dulces de Halloween en La Dulcería.">
+  <title>La Dulcería — ¿Truco o dulce?</title>
 
+  <!-- Tailwind por CDN para poder desplegar este archivo sin instalar dependencias. -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -61,32 +62,35 @@
     }
 
     .halloween-grid {
-      background-image:
-        radial-gradient(circle at 1px 1px, rgba(224, 176, 107, .09) 1px, transparent 0);
+      background-image: radial-gradient(
+        circle at 1px 1px,
+        rgba(224, 176, 107, .1) 1px,
+        transparent 0
+      );
       background-size: 26px 26px;
     }
 
     .hero-image {
       background:
-        linear-gradient(90deg, rgba(16, 14, 20, .96) 0%, rgba(16, 14, 20, .72) 48%, rgba(16, 14, 20, .18) 100%),
-        url("https://images.unsplash.com/photo-1571091718767-18b5b1457add?auto=format&fit=crop&w=1800&q=90")
+        linear-gradient(90deg, rgba(16, 14, 20, .96), rgba(16, 14, 20, .56) 62%, rgba(16, 14, 20, .2)),
+        url("https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=1800&q=90")
         center / cover;
     }
 
-    .food-image {
-      background-size: cover;
+    .product-image {
       background-position: center;
+      background-size: cover;
       transition: transform .45s ease;
     }
 
-    .food-card:hover .food-image {
+    .product-card:hover .product-image {
       transform: scale(1.05);
     }
 
-    .menu-tab[aria-pressed="true"] {
+    .category-tab[aria-pressed="true"] {
       background: var(--parchment);
-      color: var(--night);
       border-color: var(--parchment);
+      color: var(--night);
     }
 
     .mobile-menu { display: none; }
@@ -111,12 +115,12 @@
 </head>
 
 <body>
-  <!-- Cabecera -->
+  <!-- Cabecera, logo tipográfico y navegación -->
   <header class="sticky top-0 z-50 border-b border-white/10 bg-night/95 backdrop-blur-lg">
     <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 md:px-8">
       <a href="#inicio" class="flex items-center gap-3" aria-label="La Dulcería, inicio">
         <span class="grid h-12 w-12 place-items-center rounded-full border border-parchment/50 bg-plum text-parchment">
-          <!-- Calabaza decorativa dibujada en SVG -->
+          <!-- Calabaza ilustrada en SVG -->
           <svg aria-hidden="true" viewBox="0 0 48 48" class="h-8 w-8 fill-current">
             <path d="M23 8c-1.5-3 1-5 5-5-1 2-1 4-3 6 8-4 16 2 16 12 0 11-7 18-17 18S7 32 7 21C7 11 15 6 23 8Z"/>
             <path d="M23 8c0-4 3-6 7-6-2 2-2 5-4 7" fill="none" stroke="#100e14" stroke-linecap="round" stroke-width="2.5"/>
@@ -125,146 +129,158 @@
         </span>
         <span>
           <span class="block font-heading text-lg font-bold leading-tight text-parchment sm:text-xl">LA DULCERÍA</span>
-          <span class="block text-[9px] uppercase tracking-[.3em] text-bone/55">Antojos de otra dimensión</span>
+          <span class="block text-[9px] uppercase tracking-[.3em] text-bone/55">Dulces de otra dimensión</span>
         </span>
       </a>
 
       <nav class="hidden items-center gap-7 text-sm font-semibold text-bone/75 md:flex" aria-label="Navegación principal">
-        <a class="transition hover:text-parchment" href="#menu">El menú</a>
-        <a class="transition hover:text-parchment" href="#historia">Nuestra historia</a>
+        <a class="transition hover:text-parchment" href="#catalogo">Dulces</a>
+        <a class="transition hover:text-parchment" href="#nosotros">Nuestra magia</a>
         <a class="transition hover:text-parchment" href="#contacto">Contacto</a>
       </nav>
 
       <div class="hidden items-center gap-4 md:flex">
-        <span id="store-status" class="inline-flex items-center gap-2 text-xs font-bold" aria-live="polite">
-          <i id="status-dot" class="h-2 w-2 rounded-full bg-emerald-400"></i>
-          <span id="status-label">Abiertos esta noche</span>
+        <span class="inline-flex items-center gap-2 text-xs font-bold" aria-live="polite">
+          <i id="status-dot" class="h-2 w-2 rounded-full bg-emerald-400" aria-hidden="true"></i>
+          <span id="status-label">Caldero encendido</span>
         </span>
-        <a href="#menu" class="rounded-full bg-parchment px-5 py-3 text-sm font-extrabold text-night transition hover:bg-bone">
-          Ver menú <span aria-hidden="true">↓</span>
+        <a href="#catalogo" class="rounded-full bg-parchment px-5 py-3 text-sm font-extrabold text-night transition hover:bg-bone">
+          Ver dulces ↓
         </a>
       </div>
 
-      <button id="menu-toggle"
+      <button
+        id="menu-toggle"
         class="grid h-11 w-11 place-items-center rounded-full border border-white/15 text-xl md:hidden"
-        aria-expanded="false" aria-controls="mobile-nav" aria-label="Abrir menú">
-        ☰
-      </button>
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        aria-label="Abrir menú"
+      >☰</button>
     </div>
 
     <nav id="mobile-nav" class="mobile-menu border-t border-white/10 px-5 pb-5 md:hidden" aria-label="Navegación móvil">
       <div class="py-3 text-sm font-bold text-parchment" aria-live="polite">
-        <span id="mobile-status-label">Abiertos esta noche</span>
+        <span id="mobile-status-label">Caldero encendido</span>
       </div>
-      <a class="block py-3 font-semibold" href="#menu">El menú</a>
-      <a class="block py-3 font-semibold" href="#historia">Nuestra historia</a>
+      <a class="block py-3 font-semibold" href="#catalogo">Dulces</a>
+      <a class="block py-3 font-semibold" href="#nosotros">Nuestra magia</a>
       <a class="block py-3 font-semibold" href="#contacto">Contacto</a>
     </nav>
   </header>
 
   <main>
-    <!-- Hero -->
-    <section id="inicio" class="relative isolate min-h-[660px] overflow-hidden md:min-h-[760px]">
+    <!-- Banner principal -->
+    <section id="inicio" class="relative isolate min-h-[650px] overflow-hidden md:min-h-[740px]">
       <div class="hero-image absolute inset-0 -z-20"></div>
-      <div class="halloween-grid absolute inset-0 -z-10 opacity-30"></div>
+      <div class="halloween-grid absolute inset-0 -z-10 opacity-25"></div>
 
-      <div class="mx-auto grid min-h-[660px] max-w-7xl items-center px-5 py-20 md:min-h-[760px] md:px-8">
+      <div class="mx-auto grid min-h-[650px] max-w-7xl items-center px-5 py-20 md:min-h-[740px] md:px-8">
         <div class="max-w-2xl">
           <span class="mb-6 inline-flex items-center gap-2 rounded-full border border-parchment/35 bg-night/65 px-4 py-2 text-xs font-bold uppercase tracking-[.16em] text-parchment">
-            <span aria-hidden="true">✦</span> Recetas conjuradas al momento
+            <span aria-hidden="true">✦</span> Especial de temporada
           </span>
 
           <h1 class="font-display text-[clamp(4.5rem,11vw,9rem)] leading-[.82] text-parchment">
-            ANTOJOS<br>
-            <span class="text-bone">DE OTRA</span><br>
-            DIMENSIÓN
+            ¿TRUCO<br>
+            <span class="text-bone">O DULCE?</span>
           </h1>
 
           <p class="mt-7 max-w-lg text-base leading-7 text-bone/75 md:text-lg">
-            Hamburguesas monstruosamente buenas, panes recién hechos y batidos que despiertan hasta a los muertos.
+            Chocolates encantados, gomitas monstruosas y caramelos artesanales para endulzar hasta la noche más misteriosa.
           </p>
 
           <div class="mt-8 flex flex-wrap items-center gap-4">
-            <a href="#menu" class="rounded-full bg-parchment px-7 py-4 text-sm font-extrabold text-night transition hover:-translate-y-0.5 hover:bg-bone">
-              Descubre el menú <span aria-hidden="true">↓</span>
+            <a href="#catalogo" class="rounded-full bg-parchment px-7 py-4 text-sm font-extrabold text-night transition hover:-translate-y-0.5 hover:bg-bone">
+              Explora los dulces ↓
             </a>
-            <span class="text-sm text-bone/60">🎃 Hecho a mano, con un toque sobrenatural</span>
+            <span class="text-sm text-bone/60">🍬 Preparados para compartir… o no</span>
           </div>
 
           <div class="mt-12 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/15 pt-6 text-xs font-semibold uppercase tracking-[.13em] text-bone/55">
-            <span>Ingredientes frescos</span>
-            <span>Sabor artesanal</span>
-            <span>Un poco de magia</span>
+            <span>Chocolates selectos</span>
+            <span>Caramelos artesanales</span>
+            <span>Cajas para regalar</span>
           </div>
         </div>
       </div>
 
-      <span class="absolute bottom-8 right-8 hidden rotate-[-9deg] font-display text-5xl text-parchment/80 lg:block">¡BOO-N APPÉTIT!</span>
+      <span class="absolute bottom-8 right-8 hidden rotate-[-9deg] font-display text-5xl text-parchment/80 lg:block">
+        ¡DULCE O SUSTO!
+      </span>
     </section>
 
-    <!-- Carta y filtros -->
-    <section id="menu" class="bg-[#f1e9d8] py-20 text-night md:py-28">
+    <!-- Catálogo con filtros -->
+    <section id="catalogo" class="bg-[#f1e9d8] py-20 text-night md:py-28">
       <div class="mx-auto max-w-7xl px-5 md:px-8">
         <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
-            <span class="text-xs font-extrabold uppercase tracking-[.22em] text-[#795393]">Nuestro menú embrujado</span>
-            <h2 class="mt-2 font-heading text-4xl font-bold leading-tight sm:text-5xl md:text-6xl">ELIGE TU ANTOJO</h2>
+            <span class="text-xs font-extrabold uppercase tracking-[.22em] text-[#795393]">La colección embrujada</span>
+            <h2 class="mt-2 font-heading text-4xl font-bold leading-tight sm:text-5xl md:text-6xl">
+              DULCES DE TEMPORADA
+            </h2>
           </div>
           <p class="max-w-sm text-sm leading-6 text-night/65">
-            Preparado al momento y con ingredientes de calidad. Elige tu favorito y haz tu pedido por WhatsApp.
+            Encuentra tu antojo, escoge tu favorito y encárgalo por WhatsApp.
           </p>
         </div>
 
-        <div class="my-9 flex flex-wrap gap-2" role="group" aria-label="Filtrar productos por categoría">
-          <button class="menu-tab rounded-full border border-night/20 px-5 py-3 text-sm font-bold transition"
-            aria-pressed="true" data-filter="all">Todo</button>
-          <button class="menu-tab rounded-full border border-night/20 px-5 py-3 text-sm font-bold transition hover:border-night"
-            aria-pressed="false" data-filter="burgers">Hamburguesas</button>
-          <button class="menu-tab rounded-full border border-night/20 px-5 py-3 text-sm font-bold transition hover:border-night"
-            aria-pressed="false" data-filter="chicken">Panes con pollo</button>
-          <button class="menu-tab rounded-full border border-night/20 px-5 py-3 text-sm font-bold transition hover:border-night"
-            aria-pressed="false" data-filter="drinks">Batidos & pócimas</button>
-          <button class="menu-tab rounded-full border border-night/20 px-5 py-3 text-sm font-bold transition hover:border-night"
-            aria-pressed="false" data-filter="sides">Acompañamientos</button>
+        <div class="my-9 flex flex-wrap gap-2" role="group" aria-label="Filtrar dulces por categoría">
+          <button class="category-tab rounded-full border border-night/20 px-5 py-3 text-sm font-bold transition"
+            aria-pressed="true" data-filter="all">Todos</button>
+          <button class="category-tab rounded-full border border-night/20 px-5 py-3 text-sm font-bold transition"
+            aria-pressed="false" data-filter="chocolate">Chocolates</button>
+          <button class="category-tab rounded-full border border-night/20 px-5 py-3 text-sm font-bold transition"
+            aria-pressed="false" data-filter="candy">Caramelos & gomitas</button>
+          <button class="category-tab rounded-full border border-night/20 px-5 py-3 text-sm font-bold transition"
+            aria-pressed="false" data-filter="potions">Pócimas dulces</button>
+          <button class="category-tab rounded-full border border-night/20 px-5 py-3 text-sm font-bold transition"
+            aria-pressed="false" data-filter="packs">Cajas & packs</button>
         </div>
 
         <div id="product-grid" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"></div>
-        <p class="mt-8 text-xs text-night/55">Precios de ejemplo. Confirma disponibilidad y precio al realizar tu pedido.</p>
+
+        <p class="mt-8 text-xs text-night/55">
+          Precios de ejemplo. Consulta disponibilidad y opciones de entrega al hacer tu pedido.
+        </p>
       </div>
     </section>
 
-    <!-- Sobre nosotros -->
-    <section id="historia" class="relative overflow-hidden bg-plum py-20 md:py-28">
+    <!-- Historia -->
+    <section id="nosotros" class="relative overflow-hidden bg-plum py-20 md:py-28">
       <div class="halloween-grid absolute inset-0 opacity-30"></div>
       <div class="relative mx-auto grid max-w-7xl gap-12 px-5 md:grid-cols-2 md:items-center md:px-8">
         <div>
-          <span class="text-xs font-extrabold uppercase tracking-[.22em] text-parchment/75">Una historia con sabor</span>
+          <span class="text-xs font-extrabold uppercase tracking-[.22em] text-parchment/75">
+            Nuestra pequeña historia
+          </span>
           <h2 class="mt-4 font-display text-6xl leading-[.9] text-parchment md:text-8xl">
-            LA NOCHE<br>TIENE<br>HAMBRE.
+            MAGIA<br>HECHA<br>DULCE.
           </h2>
         </div>
         <div class="max-w-xl">
           <p class="text-lg leading-8 text-bone/85">
-            La Dulcería abrió sus puertas cuando un grupo de amantes de la cocina decidió mezclar sus recetas favoritas con el encanto de las noches de Halloween.
+            La Dulcería nació del amor por los dulces, los buenos ingredientes y las historias de Halloween. Reunimos chocolates, caramelos y gomitas en un rincón donde cada antojo tiene un toque de magia.
           </p>
           <p class="mt-5 text-lg leading-8 text-bone/75">
-            Cada hamburguesa, pan y batido se prepara con ingredientes frescos y mucho cuidado. Creamos un lugar para disfrutar algo rico, compartir historias y dejarse llevar por un poquito de misterio.
+            Elegimos productos de calidad y preparamos nuestras cajas con cuidado para que compartir un dulce se convierta en parte de la celebración.
           </p>
-          <a href="#menu" class="mt-8 inline-flex items-center gap-3 font-extrabold text-parchment underline decoration-parchment/60 underline-offset-8">
-            Explora las especialidades <span aria-hidden="true">↗</span>
+          <a href="#catalogo" class="mt-8 inline-flex items-center gap-3 font-extrabold text-parchment underline decoration-parchment/60 underline-offset-8">
+            Encuentra tu favorito ↗
           </a>
         </div>
       </div>
     </section>
 
-    <!-- Contacto y footer -->
+    <!-- Horarios y contacto -->
     <footer id="contacto" class="bg-night py-16 md:py-20">
       <div class="mx-auto max-w-7xl px-5 md:px-8">
         <div class="grid gap-12 border-b border-white/10 pb-12 sm:grid-cols-2 lg:grid-cols-4">
           <div class="sm:col-span-2">
-            <a href="#inicio" class="font-heading text-3xl font-bold text-parchment">LA DULCERÍA<span class="text-bone">.</span></a>
+            <a href="#inicio" class="font-heading text-3xl font-bold text-parchment">
+              LA DULCERÍA<span class="text-bone">.</span>
+            </a>
             <p class="mt-3 max-w-xs text-sm leading-6 text-bone/55">
-              Antojos de otra dimensión. Comida hecha con cariño y un toque de magia.
+              Un rincón dulce para las noches misteriosas y los antojos de temporada.
             </p>
           </div>
 
@@ -272,15 +288,16 @@
             <h3 class="mb-4 text-xs font-extrabold uppercase tracking-[.17em] text-parchment">Horarios</h3>
             <p class="text-sm leading-7 text-bone/70">
               Lunes a domingo<br>
-              5:00 p. m. – 11:00 p. m.<br>
-              <span class="text-bone/40">Horario de ejemplo; actualízalo según tu negocio.</span>
+              12:00 p. m. – 10:00 p. m.<br>
+              <span class="text-bone/40">Horario de ejemplo: actualízalo para tu tienda.</span>
             </p>
           </div>
 
           <div>
-            <h3 class="mb-4 text-xs font-extrabold uppercase tracking-[.17em] text-parchment">Encuéntranos</h3>
+            <h3 class="mb-4 text-xs font-extrabold uppercase tracking-[.17em] text-parchment">Contacto</h3>
             <a class="block text-sm text-bone/70 hover:text-parchment" href="tel:+123456789">+1 234 567 89</a>
-            <a class="mt-2 block text-sm text-bone/70 hover:text-parchment" href="https://wa.me/123456789" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a>
+            <a class="mt-2 block text-sm text-bone/70 hover:text-parchment"
+              href="https://wa.me/123456789" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a>
             <div class="mt-4 flex gap-4 text-sm font-semibold">
               <a class="text-bone/70 hover:text-parchment" href="https://instagram.com/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
               <a class="text-bone/70 hover:text-parchment" href="https://facebook.com/" target="_blank" rel="noopener noreferrer">Facebook ↗</a>
@@ -296,7 +313,7 @@
     </footer>
   </main>
 
-  <!-- Acceso flotante permanente a WhatsApp -->
+  <!-- Botón flotante para consultas generales -->
   <a
     class="fixed bottom-5 right-5 z-50 flex items-center gap-3 rounded-full bg-[#25D366] px-5 py-4 font-extrabold text-[#102b1a] shadow-2xl shadow-black/30 transition hover:-translate-y-1 hover:bg-[#55e487]"
     href="https://wa.me/123456789?text=Hola%20La%20Dulcer%C3%ADa%2C%20tengo%20una%20consulta"
@@ -307,84 +324,84 @@
     <svg aria-hidden="true" viewBox="0 0 32 32" class="h-6 w-6 fill-current">
       <path d="M16 .8A15.1 15.1 0 0 0 3.05 23.67L1 31l7.53-1.97A15.1 15.1 0 1 0 16 .8Zm0 27.45a12.3 12.3 0 0 1-6.27-1.72l-.45-.27-4.47 1.17 1.2-4.36-.3-.46A12.35 12.35 0 1 1 16 28.25Zm6.77-9.25c-.37-.18-2.2-1.08-2.54-1.2-.34-.13-.59-.19-.83.18-.25.37-.96 1.2-1.17 1.45-.22.25-.43.28-.8.1-.37-.19-1.56-.58-2.97-1.84a11.1 11.1 0 0 1-2.05-2.56c-.22-.37-.02-.57.16-.75.17-.16.37-.43.55-.64.18-.22.24-.37.37-.62.12-.25.06-.46-.03-.65-.1-.18-.83-2-1.14-2.74-.3-.72-.6-.62-.83-.63h-.71c-.25 0-.65.1-.99.46-.34.37-1.3 1.27-1.3 3.09s1.33 3.59 1.51 3.83c.19.25 2.61 3.98 6.33 5.58.89.38 1.58.6 2.12.77.9.29 1.71.25 2.35.15.72-.1 2.2-.9 2.5-1.78.31-.87.31-1.62.22-1.78-.1-.15-.34-.24-.71-.43Z"/>
     </svg>
-    <span class="hidden sm:inline">Pide por WhatsApp</span>
+    <span class="hidden sm:inline">Consulta por WhatsApp</span>
     <span class="sm:hidden">WhatsApp</span>
   </a>
 
   <script>
-    // Usa el formato internacional de WhatsApp: código de país y número, sin + ni espacios.
+    // Número en formato internacional para wa.me: código de país y número, sin + ni espacios.
     const WHATSAPP_NUMBER = "123456789";
 
     const products = [
       {
-        category: "burgers",
+        category: "chocolate",
         tag: "La favorita",
-        name: "La Calabaza Brava",
-        description: "Carne a la parrilla, cheddar, cebolla caramelizada y salsa ahumada de la casa.",
-        price: "S/ 25",
-        image: "photo-1568901346375-23c9450c58cd"
-      },
-      {
-        category: "burgers",
-        tag: "Picante y misteriosa",
-        name: "La Mordida del Vampiro",
-        description: "Doble carne, queso, tocino crujiente y mayo de ajo negro.",
-        price: "S/ 30",
-        image: "photo-1553979459-d2229ba7433a"
-      },
-      {
-        category: "chicken",
-        tag: "Recién conjurado",
-        name: "Pan con Pollo Fantasma",
-        description: "Pollo jugoso, palta, papitas al hilo y mayonesa de la casa.",
+        name: "Bombones de la Cripta",
+        description: "Selección de bombones de chocolate con rellenos suaves y misteriosos.",
         price: "S/ 18",
-        image: "photo-1606755962773-d324e0a13086"
+        image: "photo- praline-placeholder"
       },
       {
-        category: "chicken",
-        tag: "Crujiente",
-        name: "El Pan del Hombre Lobo",
-        description: "Pollo crocante, lechuga fresca y salsa cremosa en pan tostado.",
-        price: "S/ 20",
-        image: "photo-1606755962773-d324e0a13086"
+        category: "chocolate",
+        tag: "Dulce embrujo",
+        name: "Tableta Noche Oscura",
+        description: "Chocolate intenso con trocitos crujientes y un toque de sal marina.",
+        price: "S/ 14",
+        image: "photo-1575377427642-087cf684f29d"
       },
       {
-        category: "drinks",
+        category: "candy",
+        tag: "Color monstruoso",
+        name: "Gomitas del Pantano",
+        description: "Gomitas surtidas, frutales y masticables en formas espeluznantes.",
+        price: "S/ 10",
+        image: "photo-1582058091505-f87a2e55a40f"
+      },
+      {
+        category: "candy",
+        tag: "Hechos a mano",
+        name: "Caramelos Luna de Miel",
+        description: "Caramelos artesanales, dulces y brillantes como una noche de luna.",
+        price: "S/ 9",
+        image: "photo-1581798459219-318e76aecc7b"
+      },
+      {
+        category: "potions",
         tag: "Pócima dulce",
-        name: "Malteada de Fresa Sangrienta",
-        description: "Fresa, helado de vainilla y crema batida. Dulce hasta los colmillos.",
-        price: "S/ 15",
+        name: "Chocolate Caliente de Bruja",
+        description: "Bebida cremosa de chocolate con malvaviscos. Se sirve caliente.",
+        price: "S/ 13",
+        image: "photo-1542990253-0b8be4b4a9a0"
+      },
+      {
+        category: "potions",
+        tag: "Fría y encantada",
+        name: "Batido Monstruo Morado",
+        description: "Batido de frutos rojos con helado y un remolino de crema.",
+        price: "S/ 16",
         image: "photo-1572490122747-3968b75cc699"
       },
       {
-        category: "drinks",
-        tag: "Oscura y deliciosa",
-        name: "Batido de Chocolate Nocturno",
-        description: "Chocolate intenso, leche fría y helado cremoso.",
-        price: "S/ 15",
-        image: "photo-1577805947697-89e18249d767"
-      },
-      {
-        category: "sides",
+        category: "packs",
         tag: "Para compartir",
-        name: "Papas de la Cripta",
-        description: "Papas doraditas con especias y nuestra salsa secreta.",
-        price: "S/ 12",
-        image: "photo-1573080496219-bb080dd4f877"
+        name: "Caja Truco o Dulce",
+        description: "Una caja surtida de chocolates, gomitas y caramelos para compartir.",
+        price: "S/ 35",
+        image: "photo-1606313564200-e75d5e30476c"
       },
       {
-        category: "sides",
-        tag: "Crujiente embrujo",
-        name: "Aros de Cebolla",
-        description: "Dorados y crujientes, acompañados de salsa de la casa.",
-        price: "S/ 13",
-        image: "photo-1639024471283-03518883512d"
+        category: "packs",
+        tag: "Edición especial",
+        name: "Pack Noche de Brujas",
+        description: "Selección de temporada en una caja temática lista para regalar.",
+        price: "S/ 48",
+        image: "photo-1576618148400-f54bed99fcfd"
       }
     ];
 
     const grid = document.getElementById("product-grid");
 
-    // Genera las tarjetas y personaliza el mensaje de WhatsApp para cada producto.
+    // Dibuja las tarjetas desde los datos y crea el enlace de WhatsApp de cada producto.
     function renderProducts(filter = "all") {
       const visibleProducts = products.filter(
         product => filter === "all" || product.category === filter
@@ -392,17 +409,16 @@
 
       grid.innerHTML = visibleProducts.map(product => {
         const message = encodeURIComponent(
-          `¡Hola La Dulcería! Quisiera hacer un pedido de: ${product.name}`
+          `¡Hola La Dulcería! Quisiera pedir el siguiente dulce: ${product.name}`
         );
-
         const imageUrl =
           `https://images.unsplash.com/${product.image}?auto=format&fit=crop&w=900&q=85`;
 
         return `
-          <article class="food-card overflow-hidden rounded-2xl border border-night/10 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-            <div class="relative h-56 overflow-hidden">
+          <article class="product-card overflow-hidden rounded-2xl border border-night/10 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <div class="relative h-56 overflow-hidden bg-plum">
               <div
-                class="food-image absolute inset-0"
+                class="product-image absolute inset-0"
                 role="img"
                 aria-label="${product.name}"
                 style="background-image: url('${imageUrl}')"
@@ -435,17 +451,17 @@
 
     renderProducts();
 
-    // Filtra la carta y actualiza el estado accesible de las pestañas.
-    document.querySelectorAll(".menu-tab").forEach(button => {
+    // Filtra el catálogo y anuncia la pestaña elegida a lectores de pantalla.
+    document.querySelectorAll(".category-tab").forEach(button => {
       button.addEventListener("click", () => {
-        document.querySelectorAll(".menu-tab").forEach(tab => {
+        document.querySelectorAll(".category-tab").forEach(tab => {
           tab.setAttribute("aria-pressed", String(tab === button));
         });
         renderProducts(button.dataset.filter);
       });
     });
 
-    // Abre y cierra la navegación móvil.
+    // Navegación desplegable en móviles.
     const menuToggle = document.getElementById("menu-toggle");
     const mobileNav = document.getElementById("mobile-nav");
 
@@ -463,15 +479,16 @@
       });
     });
 
-    // Horario de ejemplo: abierto todos los días entre las 17:00 y las 23:00.
+    // Horario de ejemplo: abierto todos los días entre las 12:00 y las 22:00.
     function updateStoreStatus() {
       const hour = new Date().getHours();
-      const isOpen = hour >= 17 && hour < 23;
-      const label = isOpen ? "Abiertos esta noche 🎃" : "Cerrados por ahora";
+      const isOpen = hour >= 12 && hour < 22;
+      const label = isOpen ? "Caldero encendido 🎃" : "Cerrados por hoy";
       const dot = document.getElementById("status-dot");
 
       document.getElementById("status-label").textContent = label;
       document.getElementById("mobile-status-label").textContent = label;
+
       dot.classList.toggle("bg-emerald-400", isOpen);
       dot.classList.toggle("bg-red-400", !isOpen);
     }
